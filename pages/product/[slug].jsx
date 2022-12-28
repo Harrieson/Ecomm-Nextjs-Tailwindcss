@@ -9,7 +9,7 @@ import { Store } from '../../utils/Store'
 
 
 export default function ProductScreen() {
-    const { dispatch } = useContext(Store)
+    const { dispatch, state } = useContext(Store)
     const { query } = useRouter()
     const { slug } = query
     const product = data.products.find(x => x.slug === slug)
@@ -19,7 +19,9 @@ export default function ProductScreen() {
     }
 
     const addToCartHandler = () => {
-        dispatch({ type: 'CART_ADD_ITEM', payload: { ...product, quantity: 1 } })
+        const existItem = state.cart.cartItems.find((x) => x.slug === product.slug)
+        const quantity = existItem ? existItem.quantity + 1 : 1
+        dispatch({ type: 'CART_ADD_ITEM', payload: { ...product, quantity } })
     }
     return (
         <Layout title={ProductScreen.name}>
