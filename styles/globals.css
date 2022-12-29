@@ -71,3 +71,9 @@ a {
 .primary-button {
     @apply rounded bg-amber-300 py-2 px-4 shadow outline-none;
 }
+
+input,
+select,
+textarea {
+    @apply rounded border p-2 outline-none ring-indigo-300
+}

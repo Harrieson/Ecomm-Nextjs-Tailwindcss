@@ -57,7 +57,7 @@ export default function ProductScreen() {
                             <div>Status</div>
                             <div>{product.countInStock > 0 ? 'In stock' : 'Unavailable'}</div>
                         </div>
-                        <button className="primary-button v-full" onClick={addToCartHandler}>Add to Cart</button>
+                        <button className="primary-button v-full" onClick={addToCartHandler}>Add to cart</button>
                     </div>
                 </div>
             </div>
