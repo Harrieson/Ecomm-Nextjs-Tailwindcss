@@ -3,11 +3,14 @@ import Link from 'next/link'
 import { useContext, useState, useEffect } from 'react'
 import { Store } from '../utils/Store'
 import { ToastContainer } from 'react-toastify'
+import { useSession } from 'next-auth/react'
+import 'react-toastify/dist/ReactToastify.css'
 
 export default function Layout({ children, title }) {
     const { state } = useContext(Store)
     const { cart } = state
     const [cartItemsCount, setCartItemsCount] = useState(0);
+    const { status, data: session } = useSession()
     useEffect(() => {
         return () => {
             setCartItemsCount(cart.cartItems.reduce((a, c) => a + c.quantity, 0))
@@ -36,7 +39,14 @@ export default function Layout({ children, title }) {
 
                             </Link>
                             <Link href='/wishlist' className='p-2'>Wishlist</Link>
-                            <Link href='/login' className='p-2'>Login</Link>
+                            {status === 'loading' ? (
+                                'Loading'
+                            ) : session?.user ? (
+                                session.user.name
+                            ) : (
+                                <Link legacyBehavior href="/login">
+                                    <a className='p-2'>Login</a></Link>)}
+
                         </div>
                     </nav>
                 </header>
