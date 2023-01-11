@@ -2,6 +2,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 import { useContext, useState, useEffect } from 'react'
 import { Store } from '../utils/Store'
+import { ToastContainer } from 'react-toastify'
 
 export default function Layout({ children, title }) {
     const { state } = useContext(Store)
@@ -20,6 +21,7 @@ export default function Layout({ children, title }) {
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
+            <ToastContainer position='bitton-center' limit={1} />
             <div className='flex min-h-screen flex-col justify-between'>
                 <header>
                     <nav className='flex h-12 items-center p-4 justify-between shadow-md'>

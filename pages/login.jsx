@@ -2,13 +2,27 @@ import Link from 'next/link'
 import React from 'react'
 import Layout from '../components/Layout'
 import { useForm } from 'react-hook-form'
+import { signIn } from 'next-auth/react'
+import getError from '../utils/error'
+import { toast } from 'react-toastify'
 
 export default function LoginScreen() {
     const { handleSubmit, register, formState: { errors },
     } = useForm()
 
-    const submitHandler = ({ email, password }) => {
-
+    const submitHandler = async ({ email, password }) => {
+        try {
+            const result = await signIn('credentials', {
+                redirect: false,
+                email,
+                password
+            })
+            if (result.error) {
+                toast.error(result.error)
+            }
+        } catch (err) {
+            toast.error(getError(err))
+        }
     }
     return (
         <div>
