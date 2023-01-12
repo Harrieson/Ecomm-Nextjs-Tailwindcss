@@ -3,11 +3,14 @@ import Link from 'next/link'
 import { useContext, useState, useEffect } from 'react'
 import { Store } from '../utils/Store'
 import { ToastContainer } from 'react-toastify'
-import { useSession } from 'next-auth/react'
+import { signOut, useSession } from 'next-auth/react'
 import 'react-toastify/dist/ReactToastify.css'
+import { Menu } from '@headlessui/react'
+import DropdownLink from './DropdownLink'
+import Cookies from 'js-cookie'
 
 export default function Layout({ children, title }) {
-    const { state } = useContext(Store)
+    const { state, dispatch } = useContext(Store)
     const { cart } = state
     const [cartItemsCount, setCartItemsCount] = useState(0);
     const { status, data: session } = useSession()
@@ -16,6 +19,11 @@ export default function Layout({ children, title }) {
             setCartItemsCount(cart.cartItems.reduce((a, c) => a + c.quantity, 0))
         };
     }, [cart.cartItems])
+    const logoutClickHnadler = () => {
+        Cookies.remove('cart')
+        dispatch({ type: 'CART_RESET' })
+        signOut({ callbackUrl: '/login' })
+    }
     return (
         <>
             <Head>
@@ -42,7 +50,28 @@ export default function Layout({ children, title }) {
                             {status === 'loading' ? (
                                 'Loading'
                             ) : session?.user ? (
-                                session.user.name
+                                <Menu as="div" className="relative, inline-block">
+                                    <Menu.Button className="text-blue-600">
+                                        {session.user.name}
+                                    </Menu.Button>
+                                    <Menu.Items className="absolute right-0 w-56 origin-top-right shadow-lg bg-white">
+                                        <Menu.Item>
+                                            <DropdownLink className="dropdown-link hover:bg-gray-300" href='/profile'>
+                                                Profile
+                                            </DropdownLink>
+                                        </Menu.Item>
+                                        <Menu.Item>
+                                            <DropdownLink className="dropdown-link hover:bg-gray-300" href='/order-history'>
+                                                My orders
+                                            </DropdownLink>
+                                        </Menu.Item>
+                                        <Menu.Item>
+                                            <DropdownLink className="dropdown-link hover:bg-gray-300" href='#' onClick={logoutClickHnadler}>
+                                                Logout
+                                            </DropdownLink>
+                                        </Menu.Item>
+                                    </Menu.Items>
+                                </Menu>
                             ) : (
                                 <Link legacyBehavior href="/login">
                                     <a className='p-2'>Login</a></Link>)}

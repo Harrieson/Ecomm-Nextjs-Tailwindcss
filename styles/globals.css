@@ -77,3 +77,7 @@ select,
 textarea {
     @apply rounded border p-2 outline-none ring-indigo-300
 }
+
+.dropdown-link {
+    @apply flex p-2
+}
