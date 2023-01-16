@@ -3,7 +3,7 @@ import React from 'react'
 import Link from 'next/link'
 
 
-export default function ProductsItem({ product }) {
+export default function ProductsItem({ product, addToCartHandler }) {
     return (
         <div className='card'>
             <Link href={`product/${product.slug}`} legacyBehavior>
@@ -19,7 +19,8 @@ export default function ProductsItem({ product }) {
                 </Link>
                 <p className="mb-2">{product.brand}</p>
                 <p>${product.price}</p>
-                <button className="primary-button hover:bg-amber-400 active:bg-amber-500" type='button'>
+                <button className="primary-button hover:bg-amber-400 active:bg-amber-500" type='button'
+                    onClick={addToCartHandler(product)}>
                     Buy Now
                 </button>
             </div>

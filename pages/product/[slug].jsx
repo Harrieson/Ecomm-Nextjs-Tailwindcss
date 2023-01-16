@@ -24,7 +24,7 @@ export default function ProductScreen(props) {
         const { data } = await axios.get(`api/products/${product._id}`)
 
 
-        if (product.countInStock < quantity) {
+        if (data.countInStock < quantity) {
             alert('Sorry. This Product is out of Stock')
             return
         }
